@@ -97,7 +97,7 @@ namespace PhoneticSearch
                 else if (!charactersToIgnore.Contains(a) && Char.IsLetter(a)) 
                 {
                     // Check that it to make sure it isn't a consecutive occurence of an equivalent letter
-                    validCharacter = !inSameSet(a, previousCharacter);
+                    validCharacter = !isEquivalent(a, previousCharacter);
                 }
 
                 // If the character was valid, add it to our array to be compared
@@ -107,7 +107,6 @@ namespace PhoneticSearch
                 previousCharacter = a;
             }
 
-            int aCount = 0; // Used to move through characters in name A
             previousCharacter = '\0'; // The previous character starts off as '\0' (ascii null)
             for (int i = 0; i < nameB.Length; i++) // For every character in the name from text input
             {
@@ -120,7 +119,7 @@ namespace PhoneticSearch
                 else if (!charactersToIgnore.Contains(b) && Char.IsLetter(b))
                 {
                     // Check that it to make sure it isn't a consecutive occurence of an equivalent letter
-                    validCharacter = !inSameSet(b, previousCharacter);
+                    validCharacter = !isEquivalent(b, previousCharacter);
                 }
 
                 // If it is a valid character and there is a matching character in name A to compare it to
@@ -130,22 +129,31 @@ namespace PhoneticSearch
                     
                     // If characters aren't equal and they are considered equivalent
                     // use the letter in name A instead
-                    if (!(a == b) && inSameSet(a, b)) { b = a; }
+                    if (!(a == b) && isEquivalent(a, b)) { b = a; }
                 }
 
-                // If it is valid, use it! Increment the counter so that we know what t
-                if (validCharacter) { tempNameB.Add(b); aCount++; Console.Write(aCount + " " + tempNameB.Count + " | "); }
+                // If it is valid, use it!
+                if (validCharacter) { tempNameB.Add(b); }
 
+                // Save the previous character to be evaluated next loop
                 previousCharacter = b;
             }
 
+            // Turn temp variables into proper strings ready for comparison
             nameA = new string(tempNameA.ToArray());
             nameB = new string(tempNameB.ToArray());
 
+            // Return the match
             return (nameA == nameB);
         }
 
-        static bool inSameSet(char a, char b)
+        /// <summary>
+        /// This method loops through the sets to check to see if the two characters should be considered equivalent
+        /// </summary>
+        /// <param name="a">First character to compare</param>
+        /// <param name="b">Second character to compare</param>
+        /// <returns>true if they are considered equivalent</returns>
+        static bool isEquivalent(char a, char b)
         {
             bool result = false;
 
@@ -155,6 +163,7 @@ namespace PhoneticSearch
                 // If the preceding character and this character are in the same set, ignore this character
                 if (set.Contains(a) && set.Contains(b))
                 {
+                    // These letters are equivalent
                     result = true; break;
                 }
             }
