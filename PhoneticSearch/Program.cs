@@ -16,8 +16,12 @@ namespace PhoneticSearch
 
         static void Main(string[] args)
         {
+            if (args.Count() == 0) { throw new MissingSurnameException("Missing surname arguments."); }
+            
+#if DEBUG
             // Start a timer so we can work out how long the calculations took
-            Stopwatch timer = Stopwatch.StartNew(); 
+            Stopwatch timer = Stopwatch.StartNew();  
+#endif
 
             // Initialise the equivalent letter sets as per task sheet
             equivalentLetterSets[0] = new char[5] { 'a', 'e', 'i', 'o', 'u' };
@@ -30,7 +34,13 @@ namespace PhoneticSearch
             string line;
 
             // Read file into an arraylist of strings
-            while ((line = Console.In.ReadLine()) != null) { surnames.Add(line.Trim()); } // Trim to get rid of whitespace before and after 
+            do
+            {
+                line = Console.ReadLine();
+                if (line != null) { surnames.Add(line.Trim()); }
+            } while (line != null);
+
+            if (surnames.Count == 0) { throw new MissingSurnameException("Missing surname input."); }
 
             foreach (string nameA in args)
             {
@@ -53,10 +63,13 @@ namespace PhoneticSearch
             }
 
             Console.Out.WriteLine(""); // Spacing
+
+#if DEBUG
             Console.Out.WriteLine("");
 
-            // Calculate the amount of time taken and write to the console
-            Console.Out.WriteLine(timer.Elapsed + " | " + timer.ElapsedTicks + " ticks"); 
+            // Calculate the amount of time taken and write to the console (uncomment to enable)
+            Console.Out.WriteLine(timer.Elapsed + " | " + timer.ElapsedTicks + " ticks");
+#endif
         }
 
         /// <summary>
@@ -169,6 +182,20 @@ namespace PhoneticSearch
             }
 
             return result;
+        }
+    }
+
+    class MissingSurnameException : System.Exception
+    {
+        public MissingSurnameException()
+            : base("Missing surname input.")
+        {
+        }
+
+        public MissingSurnameException(string message)
+            : base(message)
+        {
+
         }
     }
 }
