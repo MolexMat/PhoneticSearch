@@ -33,9 +33,10 @@ Open a command prompt window and navigate to the folder that contains the applic
 File manifest
 -----------
 
-PhoneticSearch.sln
-PhoneticSearch/App.config
-PhoneticSearch/PhoneticSearch.csproj
-PhoneticSearch/Program.cs
-PhoneticSearch/surnames.txt
-PhoneticSearch/Properties/AssemblyInfo.cs
+* README.md
+* PhoneticSearch.sln
+* PhoneticSearch/App.config
+* PhoneticSearch/PhoneticSearch.csproj
+* PhoneticSearch/Program.cs
+* PhoneticSearch/surnames.txt
+* PhoneticSearch/Properties/AssemblyInfo.cs
